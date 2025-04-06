@@ -1,0 +1,7 @@
+tunnel: flask-react-ui
+credentials-file: /home/sniper/.cloudflared/flask-react-ui.json
+
+ingress:
+  - hostname: http://authentication.novazen.in/
+    service: http://localhost:3000
+  - service: http_status:404
