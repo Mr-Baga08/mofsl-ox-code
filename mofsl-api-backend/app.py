@@ -55,33 +55,85 @@ app.logger.addHandler(handler)
 app.logger.setLevel(logging.INFO)
 app.logger.info('Application starting up')
 
+# # Enhanced CORS configuration with specific origins
+# allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3001").split(",")
+# CORS(app, 
+#      origins=allowed_origins,
+#      supports_credentials=True,
+#      allow_headers=["Content-Type", "Authorization"],
+#      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+
+
+# Update the CORS configuration in app.py
+
 # Enhanced CORS configuration with specific origins
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3001").split(",")
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3001,http://localhost:3000").split(",")
 CORS(app, 
      origins=allowed_origins,
      supports_credentials=True,
-     allow_headers=["Content-Type", "Authorization"],
-     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+     allow_headers=["Content-Type", "Authorization", "X-Client-ID"],
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+     expose_headers=["Content-Type", "Authorization"])
+
+# Add these headers to all responses
+@app.after_request
+def after_request(response):
+    # Security headers
+    response.headers.add('X-Content-Type-Options', 'nosniff')
+    response.headers.add('X-Frame-Options', 'DENY')
+    response.headers.add('X-XSS-Protection', '1; mode=block')
+    
+    # Ensure CORS headers are set consistently
+    origin = request.headers.get('Origin')
+    if origin and origin in allowed_origins:
+        response.headers.add('Access-Control-Allow-Origin', origin)
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,X-Client-ID')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+    
+    return response
+
 
 
 bcrypt = Bcrypt(app)
 
+
+# Update these session configuration settings in app.py
+
 # Configure server-side session
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", secrets.token_hex(16))
 app.config["SESSION_TYPE"] = "filesystem"
-app.config["SESSION_PERMANENT"] = True # Changed to True for persistence
+app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_USE_SIGNER"] = True
-app.config["SESSION_COOKIE_PATH"] = "/"
-app.config["SESSION_COOKIE_DOMAIN"] = None
-app.config["SESSION_COOKIE_SAMESITE"] = "Lax"  # Added for better cookie security
-app.config["SESSION_COOKIE_SECURE"] = os.getenv("HTTPS_ENABLED", "False").lower() == "true"  # True in HTTPS environments
-app.config["SESSION_COOKIE_HTTPONLY"] = True  # Prevents JavaScript access to the cookie
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=24)  # Changed to timedelta object
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=24)
 app.config["SESSION_FILE_DIR"] = os.path.join(os.getcwd(), 'flask_session')
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SECURE"] = False  # Set to False for non-HTTPS development
+app.config["SESSION_COOKIE_SAMESITE"] = None  # None for cross-site requests in development
 app.config["SESSION_COOKIE_NAME"] = "mofsl_session"
+app.config["SESSION_COOKIE_DOMAIN"] = None  # Set to None for localhost
 
-# Create the session directory if it doesn't exist
+# After defining the Session configuration, create the session directory and initialize
 os.makedirs(app.config["SESSION_FILE_DIR"], exist_ok=True)
+Session(app)
+
+# Add this debug route to check session status
+@app.route('/debug/session', methods=['GET'])
+def debug_session():
+    """Check current session state"""
+    return jsonify({
+        'client_id': session.get('client_id'),
+        'has_auth_token': 'auth_token' in session,
+        'session_keys': list(session.keys()),
+        'cookie_settings': {
+            'name': app.config["SESSION_COOKIE_NAME"],
+            'secure': app.config["SESSION_COOKIE_SECURE"],
+            'samesite': app.config["SESSION_COOKIE_SAMESITE"],
+            'httponly': app.config["SESSION_COOKIE_HTTPONLY"],
+            'domain': app.config["SESSION_COOKIE_DOMAIN"]
+        }
+    })
+
 
 Session(app)
 
@@ -96,14 +148,14 @@ DB_PATH = os.getenv("DB_PATH", "mofsl_data.db")
 # Dictionary to store MOFSL client instances
 mofsl_clients = {}
 
-# Global error handler
 @app.errorhandler(Exception)
 def handle_exception(e):
     """Global exception handler"""
     traceback.print_exc()  # Print stack trace to console
     
     # In production, you might want to be less verbose for security reasons
-    if app.config['ENV'] == 'production':
+    env = app.config.get('ENV', 'development')
+    if env == 'production':
         return jsonify({
             'status': 'ERROR',
             'message': 'An internal server error occurred'
@@ -778,21 +830,21 @@ def resend_otp():
         }), 500
 
 # Enhanced CORS configuration and security headers
-@app.after_request
-def after_request(response):
-    # Security headers
-    response.headers.add('X-Content-Type-Options', 'nosniff')
-    response.headers.add('X-Frame-Options', 'DENY')
-    response.headers.add('X-XSS-Protection', '1; mode=block')
-    response.headers.add('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+# @app.after_request
+# def after_request(response):
+#     # Security headers
+#     response.headers.add('X-Content-Type-Options', 'nosniff')
+#     response.headers.add('X-Frame-Options', 'DENY')
+#     response.headers.add('X-XSS-Protection', '1; mode=block')
+#     response.headers.add('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
     
-    # # CORS headers - these might be redundant with Flask-CORS but ensure they're set consistently
-    # origin = request.headers.get('Origin')
-    # if origin and origin in allowed_origins:
-    #     response.headers.add('Access-Control-Allow-Origin', origin)
-    #     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    #     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-    #     response.headers.add('Access-Control-Allow-Credentials', 'true')
+#     # # CORS headers - these might be redundant with Flask-CORS but ensure they're set consistently
+#     # origin = request.headers.get('Origin')
+#     # if origin and origin in allowed_origins:
+#     #     response.headers.add('Access-Control-Allow-Origin', origin)
+#     #     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+#     #     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+#     #     response.headers.add('Access-Control-Allow-Credentials', 'true')
     
     return response
 
@@ -807,7 +859,34 @@ def logout():
         'message': 'Logged out successfully'
     })
 
-# Authentication check decorator
+# @app.before_request
+# def debug_session():
+#     """Debug middleware to log session data for troubleshooting"""
+#     # Only log on API endpoints to avoid noise
+#     if request.path.startswith('/api/'):
+#         app.logger.debug(f"Request path: {request.path}")
+#         app.logger.debug(f"Session data: {dict(session)}")
+#         app.logger.debug(f"Request headers: {dict(request.headers)}")
+        
+#         # Log cookies for debugging session issues
+#         cookies = request.cookies
+#         safe_cookies = {k: '***' if k.lower() in ['session', 'mofsl_session'] else v 
+#                         for k, v in cookies.items()}
+#         app.logger.debug(f"Cookies: {safe_cookies}")
+        
+#         # Check if client_id exists in session
+#         if 'client_id' in session:
+#             app.logger.debug(f"Session has client_id: {session['client_id']}")
+#         else:
+#             app.logger.debug("No client_id in session")
+        
+#         # Check auth token presence (not value for security)
+#         if 'auth_token' in session:
+#             app.logger.debug("Session has auth_token")
+#         else:
+#             app.logger.debug("No auth_token in session")
+
+
 def login_required(f):
     @functools.wraps(f)
     def decorated_function(*args, **kwargs):
@@ -815,18 +894,49 @@ def login_required(f):
         print(f"Client ID in session: {session.get('client_id')}")
         print(f"Auth Token in session: {'Present' if 'auth_token' in session else 'Missing'}")
         
+        # Check for client_id in query params
+        client_id_query = request.args.get('client_id')
+        if client_id_query:
+            print(f"Client ID in query params: {client_id_query}")
+            
+            # Check if this client_id exists in our database
+            clients = load_clients()
+            if client_id_query in clients:
+                # Valid client ID from query, update session
+                if 'client_id' not in session:
+                    session['client_id'] = client_id_query
+                    session.modified = True
+                    print(f"Updated session with client_id from query: {client_id_query}")
+        
+        # If still no client_id, check headers
+        if 'client_id' not in session and request.headers.get('X-Client-ID'):
+            client_id_header = request.headers.get('X-Client-ID')
+            clients = load_clients()
+            if client_id_header in clients:
+                session['client_id'] = client_id_header
+                session.modified = True
+                print(f"Updated session with client_id from header: {client_id_header}")
+        
+        # Final authentication check
         if 'client_id' not in session:
-            print("Authentication failed: No client_id in session")
+            print("No client_id in session, authentication required")
             return jsonify({
                 'status': 'ERROR',
-                'message': 'Authentication required - No client ID'
+                'message': 'Authentication required - No client ID',
+                'error_code': 'NO_CLIENT_ID'
             }), 401
         
+      
+        if request.path == '/api/client-info' and 'client_id' in session:
+            # Allow access to client-info even without token
+            return f(*args, **kwargs)
+        
+        # For all other protected endpoints, require auth_token
         if 'auth_token' not in session:
-            print("Authentication failed: No auth_token in session")
             return jsonify({
                 'status': 'ERROR',
-                'message': 'Authentication required - No auth token'
+                'message': 'Authentication required - No auth token',
+                'error_code': 'NO_AUTH_TOKEN'
             }), 401
         
         return f(*args, **kwargs)
@@ -867,20 +977,29 @@ def get_ox_codes():
 @login_required
 def get_client_info():
     """Get information about the currently authenticated client"""
-    print("Debugging session")
-    print(session)
-
-    # Get client_id from session
+    # Get client_id from session or query parameters
     client_id = session.get('client_id')
-    print("printing client id",client_id)
+    
+    # If not in session, try to get from query parameters
+    if not client_id:
+        client_id = request.args.get('client_id')
+        if client_id:
+            # Update session with client_id from query params
+            session['client_id'] = client_id
+            session.modified = True
+    
+    app.logger.info(f"Client info request for: {client_id}")
+    
     # Load client data
     clients = load_clients()
+    print("clients",clients)
+    print("client_id",client_id)
     
     # Check if client exists
-    if client_id not in clients:
+    if not client_id or client_id not in clients:
         return jsonify({
             'status': 'ERROR',
-            'message': 'Client not found'
+            'message': 'Client not found or not authenticated'
         }), 404
     
     # Get client data

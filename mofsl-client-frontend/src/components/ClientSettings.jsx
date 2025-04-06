@@ -34,7 +34,7 @@ const ClientSettings = () => {
                 >
                   Credentials
                 </Nav.Link>
-                <Nav.Link 
+                {/* <Nav.Link 
                   active={currentPath === '/settings/profile'} 
                   onClick={() => handleNavClick('/settings/profile')}
                   className="ps-3 py-2"
@@ -54,7 +54,7 @@ const ClientSettings = () => {
                   className="ps-3 py-2"
                 >
                   Security
-                </Nav.Link>
+                </Nav.Link> */}
               </Nav>
             </Card.Body>
           </Card>

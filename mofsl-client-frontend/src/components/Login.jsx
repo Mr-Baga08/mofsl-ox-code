@@ -1,88 +1,90 @@
+// src/components/Login.jsx
 import React, { useState } from 'react';
 import { Card, Form, Button, Alert, Container, Row, Col, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import axios from 'axios';
-
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5005';
+import AuthService from '../services/AuthService';
+import { useAuth } from '../contexts/AuthContext'; // Import the useAuth hook
 
 const Login = () => {
-  const { login, verifyOTP } = useAuth();
   const navigate = useNavigate();
-  
+  const { login, verifyOTP } = useAuth(); // ✅ This fixes the ESLint error
+
   const [clientId, setClientId] = useState('');
   const [password, setPassword] = useState('');
   const [otp, setOtp] = useState('');
   const [needOTP, setNeedOTP] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
+    setSuccess(null);
+  
+    const cleanClientId = clientId.trim().toUpperCase();
+  
     try {
-      const result = await login(clientId, password);
-      
-      if (result.needOTP) {
+      const response = await login(cleanClientId, password);
+  
+      if (response.needOTP) {
         setNeedOTP(true);
-      } else if (result.success) {
-        // Redirect to dashboard on successful login
-        navigate('/');
+        setSuccess('OTP sent to your registered mobile/email.');
+      } else if (response.success) {
+        setSuccess('Login successful! Redirecting...');
+        setTimeout(() => navigate('/'), 1000);
       } else {
-        setError(result.error || 'Login failed. Please try again.');
+        setError(response.error || 'Login failed. Please try again.');
       }
     } catch (err) {
-      setError('An error occurred during login. Please try again.');
-      console.error('Login error:', err);
+      setError(err.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
+    setSuccess(null);
+  
+    const cleanClientId = clientId.trim().toUpperCase();
+  
     try {
-      const result = await verifyOTP(clientId, otp);
-      
-      if (result.success) {
-        // Redirect to dashboard on successful verification
-        navigate('/');
+      const response = await verifyOTP(cleanClientId, otp);
+  
+      if (response.success) {
+        setSuccess('OTP verified successfully! Redirecting...');
+        setTimeout(() => navigate('/'), 1000);
       } else {
-        setError(result.error || 'OTP verification failed. Please try again.');
+        setError(response.error || 'OTP verification failed.');
       }
     } catch (err) {
-      setError('An error occurred during OTP verification. Please try again.');
-      console.error('OTP verification error:', err);
+      setError(err.message || 'OTP verification failed.');
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handleResendOTP = async () => {
+    const cleanClientId = clientId.trim().toUpperCase();
     setLoading(true);
     setError(null);
 
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/api/resend-otp`,
-        { client_id: clientId },
-        { withCredentials: true }
-      );
-
-      if (response.data && response.data.status === 'SUCCESS') {
-        // Show success message
-        setError({ type: 'success', message: 'OTP resent successfully.' });
+      const response = await AuthService.resendOTP(cleanClientId);
+      if (response.data?.status === 'SUCCESS') {
+        setSuccess('OTP resent successfully!');
       } else {
-        setError(response.data.message || 'Failed to resend OTP.');
+        setError(response.data?.message || 'Failed to resend OTP.');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred while resending OTP.');
-      console.error('Resend OTP error:', err);
+      setError(err.response?.data?.message || 'Failed to resend OTP.');
     } finally {
       setLoading(false);
     }
@@ -97,54 +99,42 @@ const Login = () => {
               {needOTP ? 'Verify OTP' : 'Login to MOFSL API'}
             </Card.Header>
             <Card.Body>
-              {error && typeof error === 'string' && (
-                <Alert variant="danger">{error}</Alert>
-              )}
-              
-              {error && typeof error === 'object' && error.type === 'success' && (
-                <Alert variant="success">{error.message}</Alert>
-              )}
+              {error && <Alert variant="danger">{error}</Alert>}
+              {success && <Alert variant="success">{success}</Alert>}
 
               {!needOTP ? (
-                // Login Form
                 <Form onSubmit={handleLogin}>
-                  <Form.Group className="mb-3" controlId="clientId">
+                  <Form.Group className="mb-3">
                     <Form.Label>Client ID</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="Enter your client ID"
                       value={clientId}
-                      onChange={(e) => setClientId(e.target.value)}
+                      onChange={(e) => setClientId(e.target.value.toUpperCase())}
                       required
                     />
                   </Form.Group>
 
-                  <Form.Group className="mb-3" controlId="password">
+                  {<Form.Group className="mb-3">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                       type="password"
                       placeholder="Enter your password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      required
+                      autoComplete="current-password"
                     />
-                  </Form.Group>
+                  </Form.Group> }
 
                   <div className="d-grid gap-2">
-                    <Button 
-                      variant="primary" 
-                      type="submit" 
-                      disabled={loading}
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      disabled={loading || !clientId.trim()}
                     >
                       {loading ? (
                         <>
-                          <Spinner
-                            as="span"
-                            animation="border"
-                            size="sm"
-                            role="status"
-                            aria-hidden="true"
-                          />
+                          <Spinner as="span" animation="border" size="sm" role="status" />
                           <span className="ms-2">Logging in...</span>
                         </>
                       ) : (
@@ -154,54 +144,40 @@ const Login = () => {
                   </div>
                 </Form>
               ) : (
-                // OTP Verification Form
                 <Form onSubmit={handleVerifyOTP}>
-                  <Form.Group className="mb-3" controlId="otp">
+                  <Form.Group className="mb-3">
                     <Form.Label>Enter OTP</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Enter the OTP sent to your registered mobile/email"
+                      placeholder="Enter OTP"
                       value={otp}
                       onChange={(e) => setOtp(e.target.value)}
                       required
                     />
-                    <Form.Text className="text-muted">
-                      OTP has been sent to your registered mobile number/email.
-                    </Form.Text>
                   </Form.Group>
 
                   <div className="d-grid gap-2">
-                    <Button 
-                      variant="primary" 
-                      type="submit" 
-                      disabled={loading}
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      disabled={loading || !otp.trim()}
                     >
                       {loading ? (
                         <>
-                          <Spinner
-                            as="span"
-                            animation="border"
-                            size="sm"
-                            role="status"
-                            aria-hidden="true"
-                          />
+                          <Spinner as="span" animation="border" size="sm" role="status" />
                           <span className="ms-2">Verifying...</span>
                         </>
                       ) : (
                         'Verify OTP'
                       )}
                     </Button>
-                    
-                    <Button 
-                      variant="link" 
-                      onClick={handleResendOTP}
-                      disabled={loading}
-                    >
+
+                    <Button variant="link" onClick={handleResendOTP} disabled={loading}>
                       Resend OTP
                     </Button>
-                    
-                    <Button 
-                      variant="outline-secondary" 
+
+                    <Button
+                      variant="outline-secondary"
                       onClick={() => setNeedOTP(false)}
                       disabled={loading}
                     >

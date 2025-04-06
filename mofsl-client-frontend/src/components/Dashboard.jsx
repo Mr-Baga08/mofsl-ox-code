@@ -35,8 +35,8 @@ const Dashboard = () => {
     <Container className="py-5">
       <Row className="mb-4">
         <Col>
-          <h1>MOFSL API Dashboard</h1>
-          <p className="lead text-muted">Manage your MOFSL API integration</p>
+          <h1>Novazen MOFSL</h1>
+          <p className="lead text-muted">Manage Your MOFSL Data With Us</p>
         </Col>
       </Row>
 
@@ -51,7 +51,7 @@ const Dashboard = () => {
       <Row>
         <Col md={4} className="mb-4">
           <Card className="h-100">
-            <Card.Header as="h5">Client Information</Card.Header>
+            <Card.Header as="h5">Your Information</Card.Header>
             <Card.Body>
               {loading ? (
                 <p>Loading client information...</p>

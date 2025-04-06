@@ -1,236 +1,106 @@
+// src/services/api.js
 import axios from 'axios';
 
-// Get API base URL from environment variable or use default
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5005';
 
-// Create axios instance with common config
-const apiClient = axios.create({
+// Create axios instance
+const api = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: true, // Include cookies for session authentication
+  withCredentials: true, // Enables session cookies
   headers: {
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json'
   }
 });
 
-// Add request interceptor to handle authentication
-apiClient.interceptors.request.use(
-  (config) => {
-    // You could add auth token to headers here if using token auth
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+// ✅ Interceptor: Attach client_id to headers & only GET query params
+api.interceptors.request.use(config => {
+  const clientId = localStorage.getItem('mofsl_client_id');
 
-// Add response interceptor to handle common errors
-apiClient.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    // Handle session expiration
-    if (error.response && error.response.status === 401) {
-      // Redirect to login page or refresh token
-      window.location.href = '/login';
+  if (clientId) {
+    // Always attach to headers
+    config.headers['X-Client-ID'] = clientId;
+
+    // Only append to URL for GET requests
+    if (config.method === 'get') {
+      const url = new URL(config.url, API_BASE_URL);
+      url.searchParams.append('client_id', clientId);
+      config.url = url.pathname + url.search;
     }
-    return Promise.reject(error);
   }
-);
 
-// Authentication API calls
-const authAPI = {
-  /**
-   * Login to the API
-   * @param {string} clientId - Client ID
-   * @param {string} password - Password
-   * @returns {Promise} - API response
-   */
-  login: (clientId, password) => {
-    return apiClient.post('/api/login', { client_id: clientId, password });
-  },
+  return config;
+});
 
-  /**
-   * Verify OTP for authentication
-   * @param {string} clientId - Client ID
-   * @param {string} otp - One-time password
-   * @returns {Promise} - API response
-   */
-  verifyOTP: (clientId, otp) => {
-    return apiClient.post('/api/verify-otp', { client_id: clientId, otp });
-  },
+// ✅ Login API
+export const login = async (clientId, password = '') => {
+  try {
+    const response = await api.post('/api/login', { client_id: clientId, password });
 
-  /**
-   * Resend OTP for authentication
-   * @param {string} clientId - Client ID
-   * @returns {Promise} - API response
-   */
-  resendOTP: (clientId) => {
-    return apiClient.post('/api/resend-otp', { client_id: clientId });
-  },
+    if (response.data?.status === 'SUCCESS') {
+      localStorage.setItem('mofsl_client_id', clientId);
+    }
 
-  /**
-   * Register a new client
-   * @param {Object} clientData - Client registration data
-   * @returns {Promise} - API response
-   */
-  register: (clientData) => {
-    return apiClient.post('/api/register', clientData);
-  },
-
-  /**
-   * Logout from the API
-   * @returns {Promise} - API response
-   */
-  logout: () => {
-    return apiClient.post('/api/logout');
-  },
-
-  /**
-   * Test authentication status
-   * @returns {Promise} - API response
-   */
-  testAuth: () => {
-    return apiClient.get('/api/test-auth');
+    return response.data;
+  } catch (error) {
+    console.error('Login error:', error);
+    throw error;
   }
 };
 
-// Client information API calls
-const clientAPI = {
-  /**
-   * Get client information
-   * @returns {Promise} - API response
-   */
-  getClientInfo: () => {
-    return apiClient.get('/api/client-info');
-  },
+// ✅ Verify OTP API
+export const verifyOTP = async (clientId, otp) => {
+  try {
+    const response = await api.post('/api/verify-otp', { client_id: clientId, otp });
 
-  /**
-   * Update client credentials
-   * @param {Object} credentials - Client credentials to update
-   * @returns {Promise} - API response
-   */
-  updateCredentials: (credentials) => {
-    return apiClient.put('/api/update-client', credentials);
+    if (response.data?.status === 'SUCCESS') {
+      localStorage.setItem('mofsl_client_id', clientId);
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error('OTP verification error:', error);
+    throw error;
   }
 };
 
-// Market data API calls
-const marketAPI = {
-  /**
-   * Get market data
-   * @param {Object} params - Market data parameters
-   * @returns {Promise} - API response
-   */
-  getMarketData: (params) => {
-    return apiClient.get('/api/market-data', { params });
+// ✅ Resend OTP API
+export const resendOTP = async (clientId) => {
+  try {
+    return await api.post('/api/resend-otp', { client_id: clientId });
+  } catch (error) {
+    console.error('Resend OTP error:', error);
+    throw error;
   }
 };
 
-// Order management API calls
-const orderAPI = {
-  /**
-   * Get order book
-   * @returns {Promise} - API response
-   */
-  getOrderBook: () => {
-    return apiClient.get('/api/orders');
-  },
-
-  /**
-   * Place a new order
-   * @param {Object} orderData - Order data
-   * @returns {Promise} - API response
-   */
-  placeOrder: (orderData) => {
-    return apiClient.post('/api/orders', orderData);
-  },
-
-  /**
-   * Modify an existing order
-   * @param {string} orderId - Order ID
-   * @param {Object} orderData - Order data to update
-   * @returns {Promise} - API response
-   */
-  modifyOrder: (orderId, orderData) => {
-    return apiClient.put(`/api/orders/${orderId}`, orderData);
-  },
-
-  /**
-   * Cancel an order
-   * @param {string} orderId - Order ID
-   * @returns {Promise} - API response
-   */
-  cancelOrder: (orderId) => {
-    return apiClient.delete(`/api/orders/${orderId}`);
+// ✅ Get Client Info (GET + client_id auto-attached)
+export const getClientInfo = async () => {
+  try {
+    return await api.get('/api/client-info'); // `client_id` will be appended automatically
+  } catch (error) {
+    console.error('Get client info error:', error);
+    throw error;
   }
 };
 
-// Portfolio API calls
-const portfolioAPI = {
-  /**
-   * Get positions
-   * @returns {Promise} - API response
-   */
-  getPositions: () => {
-    return apiClient.get('/api/positions');
-  },
-
-  /**
-   * Get holdings
-   * @returns {Promise} - API response
-   */
-  getHoldings: () => {
-    return apiClient.get('/api/holdings');
-  },
-
-  /**
-   * Get funds
-   * @returns {Promise} - API response
-   */
-  getFunds: () => {
-    return apiClient.get('/api/funds');
+// ✅ Logout API
+export const logout = async () => {
+  try {
+    const response = await api.post('/api/logout');
+    localStorage.removeItem('mofsl_client_id');
+    return response.data;
+  } catch (error) {
+    localStorage.removeItem('mofsl_client_id');
+    console.error('Logout error:', error);
+    throw error;
   }
 };
 
-// Report API calls
-const reportAPI = {
-  /**
-   * Get trade book
-   * @param {Object} params - Trade book parameters
-   * @returns {Promise} - API response
-   */
-  getTradeBook: (params) => {
-    return apiClient.get('/api/trade-book', { params });
-  },
-
-  /**
-   * Get P&L report
-   * @param {Object} params - P&L report parameters
-   * @returns {Promise} - API response
-   */
-  getPnlReport: (params) => {
-    return apiClient.get('/api/pnl-report', { params });
-  }
-};
-
-// Export all API services
-export {
-  apiClient,
-  authAPI,
-  clientAPI,
-  marketAPI,
-  orderAPI,
-  portfolioAPI,
-  reportAPI
-};
-
-// Default export for convenience
 export default {
-  auth: authAPI,
-  client: clientAPI,
-  market: marketAPI,
-  order: orderAPI,
-  portfolio: portfolioAPI,
-  report: reportAPI
+  login,
+  verifyOTP,
+  resendOTP,
+  getClientInfo,
+  logout,
+  api
 };

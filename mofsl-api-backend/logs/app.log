@@ -275,3 +275,190 @@ Traceback (most recent call last):
     if app.config['ENV'] == 'production':
        ~~~~~~~~~~^^^^^^^
 KeyError: 'ENV'
+2025-04-06 12:40:01,622 INFO: Application starting up [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:56]
+2025-04-06 12:40:01,633 INFO: Database initialized successfully [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:250]
+2025-04-06 12:40:05,925 ERROR: Exception on /favicon.ico [GET] [in /home/mrunal/Documents/novazen/mofsl-api-backend/venv/lib/python3.12/site-packages/flask/app.py:875]
+Traceback (most recent call last):
+  File "/home/mrunal/Documents/novazen/mofsl-api-backend/venv/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mrunal/Documents/novazen/mofsl-api-backend/venv/lib/python3.12/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/mrunal/Documents/novazen/mofsl-api-backend/venv/lib/python3.12/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mrunal/Documents/novazen/mofsl-api-backend/venv/lib/python3.12/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mrunal/Documents/novazen/mofsl-api-backend/venv/lib/python3.12/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mrunal/Documents/novazen/mofsl-api-backend/venv/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mrunal/Documents/novazen/mofsl-api-backend/venv/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mrunal/Documents/novazen/mofsl-api-backend/venv/lib/python3.12/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "/home/mrunal/Documents/novazen/mofsl-api-backend/venv/lib/python3.12/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mrunal/Documents/novazen/mofsl-api-backend/venv/lib/python3.12/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mrunal/Documents/novazen/mofsl-api-backend/app.py", line 106, in handle_exception
+    if app.config['ENV'] == 'production':
+       ~~~~~~~~~~^^^^^^^
+KeyError: 'ENV'
+2025-04-06 12:43:44,198 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:364]
+2025-04-06 12:49:26,343 INFO: Application starting up [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:56]
+2025-04-06 12:49:26,354 INFO: Database initialized successfully [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:250]
+2025-04-06 12:49:43,210 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:364]
+2025-04-06 12:54:44,987 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:364]
+2025-04-06 12:55:36,079 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:364]
+2025-04-06 12:55:48,087 INFO: Application starting up [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:56]
+2025-04-06 12:55:48,098 INFO: Database initialized successfully [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:302]
+2025-04-06 12:55:53,776 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 12:55:53,795 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:990]
+2025-04-06 12:58:36,410 INFO: Application starting up [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:56]
+2025-04-06 12:58:36,420 INFO: Database initialized successfully [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:302]
+2025-04-06 12:58:43,682 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 12:58:43,698 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:990]
+2025-04-06 12:59:48,055 INFO: Application starting up [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:56]
+2025-04-06 12:59:48,066 INFO: Database initialized successfully [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:302]
+2025-04-06 12:59:55,879 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 12:59:55,900 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:00:51,491 INFO: Application starting up [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:56]
+2025-04-06 13:00:51,512 INFO: Database initialized successfully [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:302]
+2025-04-06 13:00:53,776 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:00:53,800 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:01:00,217 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:01:00,242 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:01:02,707 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:01:02,715 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:01:04,992 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:01:05,010 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:01:28,779 INFO: Application starting up [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:56]
+2025-04-06 13:01:28,796 INFO: Database initialized successfully [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:302]
+2025-04-06 13:01:31,398 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:01:31,427 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:02:54,683 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:02:54,693 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:03:02,701 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:03:02,725 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:04:43,422 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:04:43,455 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:08:32,991 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:08:33,009 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:09:04,630 INFO: Application starting up [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:56]
+2025-04-06 13:09:04,650 INFO: Database initialized successfully [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:302]
+2025-04-06 13:12:47,650 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:12:47,693 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:12:52,660 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:12:52,683 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:13:02,361 INFO: Application starting up [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:56]
+2025-04-06 13:13:02,378 INFO: Database initialized successfully [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:302]
+2025-04-06 13:13:06,086 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:13:06,116 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:14:07,291 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:14:07,326 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:16:52,019 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:16:52,045 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:17:43,490 INFO: Application starting up [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:56]
+2025-04-06 13:17:43,504 INFO: Database initialized successfully [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:302]
+2025-04-06 13:17:47,083 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:17:47,106 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:21:24,020 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:21:24,055 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:23:38,619 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:23:42,806 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:23:44,422 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:23:55,122 INFO: Application starting up [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:56]
+2025-04-06 13:23:55,142 INFO: Database initialized successfully [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:302]
+2025-04-06 13:23:58,284 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:26:12,738 INFO: Application starting up [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:56]
+2025-04-06 13:26:12,756 INFO: Database initialized successfully [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:302]
+2025-04-06 13:27:35,500 INFO: Application starting up [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:56]
+2025-04-06 13:27:35,511 INFO: Database initialized successfully [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:302]
+2025-04-06 13:27:45,015 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:27:45,041 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:31:01,428 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:31:01,450 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:31:08,627 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:31:08,632 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:31:08,728 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:31:08,735 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:31:14,697 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:31:14,704 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:31:17,208 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:31:17,214 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:31:17,322 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:31:17,331 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:31:43,417 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:31:43,435 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:31:48,374 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:31:48,379 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:31:48,479 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:31:48,484 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:13,675 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:13,679 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:13,810 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:13,816 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:29,681 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:34:29,708 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:29,818 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:29,825 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:33,610 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:33,616 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:41,429 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:41,436 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:42,702 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:42,707 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:50,252 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:50,258 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:52,014 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:52,021 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:52,995 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:34:53,003 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:35:01,357 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:35:01,361 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:35:03,125 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:35:03,133 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:36:37,279 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 13:36:37,296 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:36:37,331 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 13:36:37,337 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:47:29,950 INFO: Application starting up [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:56]
+2025-04-06 14:47:29,967 INFO: Database initialized successfully [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:302]
+2025-04-06 14:47:43,375 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 14:47:43,385 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:47:43,421 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:47:43,425 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:50:45,616 INFO: Stored new auth token for client DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 14:50:45,639 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:50:45,684 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:50:45,690 INFO: Client info request for: DEPG1204 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:55:00,710 INFO: Stored new auth token for client SRNG0523 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 14:55:01,225 INFO: Client info request for: SRNG0523 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:55:01,246 INFO: Client info request for: SRNG0523 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:55:01,252 INFO: Client info request for: SRNG0523 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:55:13,917 INFO: Client info request for: SRNG0523 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:55:13,922 INFO: Client info request for: SRNG0523 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:55:57,200 INFO: Client info request for: SRNG0523 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:55:57,206 INFO: Client info request for: SRNG0523 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:56:02,062 INFO: Client info request for: SRNG0523 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:56:02,070 INFO: Client info request for: SRNG0523 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:56:36,564 INFO: Stored new auth token for client SRNG0523 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 14:56:36,571 INFO: Client info request for: SRNG0523 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:56:36,593 INFO: Client info request for: SRNG0523 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:56:36,599 INFO: Client info request for: SRNG0523 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:57:23,532 INFO: Stored new auth token for client SRNG1802 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:416]
+2025-04-06 14:57:24,047 INFO: Client info request for: SRNG1802 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:57:24,107 INFO: Client info request for: SRNG1802 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]
+2025-04-06 14:57:24,114 INFO: Client info request for: SRNG1802 [in /home/mrunal/Documents/novazen/mofsl-api-backend/app.py:991]

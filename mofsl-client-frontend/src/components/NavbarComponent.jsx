@@ -23,13 +23,13 @@ const NavbarComponent = () => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">
       <Container>
-        <Navbar.Brand as={Link} to="/">MOFSL API</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">Novazen MOFSL Portal</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             {user ? (
               <>
-                <Nav.Link as={Link} to="/update-credentials">Update Info</Nav.Link>
+                {/* <Nav.Link as={Link} to="/update-credentials">Update Info</Nav.Link> */}
                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
               </>
             ) : (
